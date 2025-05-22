@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-struct MyListItemViewModel: Identifiable {
+struct MyListItemController: Identifiable {
     let id = UUID()
     
     private let myListItem: MyListItem

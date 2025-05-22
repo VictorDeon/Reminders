@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct AddNewListView: View {
-    @ObservedObject private var viewModel: AddNewListViewModel
+    @ObservedObject private var controller: AddNewListController
     @Environment(\.dismiss) var dismiss
     
-    init(viewModel: AddNewListViewModel) {
-        self.viewModel = viewModel
+    init(controller: AddNewListController) {
+        self.controller = controller
     }
     
     var body: some View {
@@ -17,12 +17,12 @@ struct AddNewListView: View {
                 
                 HStack {
                     Text("Name:")
-                    TextField("", text: $viewModel.name)
+                    TextField("", text: $controller.name)
                 }
                 
                 HStack {
                     Text("Color:")
-                    ColorListView(selectedColor: $viewModel.color)
+                    ColorListView(selectedColor: $controller.color)
                 }
                 
                 HStack {
@@ -31,10 +31,10 @@ struct AddNewListView: View {
                         dismiss()
                     }
                     Button("OK") {
-                        viewModel.save()
+                        controller.save()
                         dismiss()
                     }
-                    .disabled(viewModel.name.isEmpty)
+                    .disabled(controller.name.isEmpty)
                 }
             }
             .frame(minWidth: 300)
@@ -45,6 +45,6 @@ struct AddNewListView: View {
 
 #Preview {
     let viewContext = CoreDataManager.shared.persistentContainer.viewContext
-    AddNewListView(viewModel: AddNewListViewModel(context: viewContext))
+    AddNewListView(controller: AddNewListController(context: viewContext))
 }
 

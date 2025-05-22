@@ -19,7 +19,7 @@ struct CalendarButtonView: View {
                         showCalendar = false
                     }
             }
-        }
+        }.padding(5)
     }
 }
 

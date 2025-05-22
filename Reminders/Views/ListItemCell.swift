@@ -6,12 +6,12 @@ struct ListItemCell: View {
     @State private var showPopover: Bool = false
     @State private var checked: Bool = false
 
-    let item: MyListItemViewModel
+    let item: MyListItemController
     
     let delay = Delay()
 
-    var onListItemDeleted: (MyListItemViewModel) -> Void = { _ in }
-    var onListItemCompleted: (MyListItemViewModel) -> Void = { _ in }
+    var onListItemDeleted: (MyListItemController) -> Void = { _ in }
+    var onListItemCompleted: (MyListItemController) -> Void = { _ in }
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
@@ -73,6 +73,6 @@ struct ListItemCell: View {
     }
 }
 
-//#Preview {
-//    ListItemCell(item: MyListItemViewModel(myListItem: MyListItem()))
-//}
+#Preview {
+    ListItemCell(item: MyListItemController(myListItem: MyListItem()))
+}

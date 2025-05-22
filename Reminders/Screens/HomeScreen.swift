@@ -7,12 +7,12 @@ struct HomeScreen: View {
     var body: some View {
         NavigationView {
             
-            let myListViewModel = MyListsViewModel(context: context)
-            let firstListViewModel = myListViewModel.myLists.first
+            let myListController = MyListsController(context: context)
+            let firstListInstanceController = myListController.myLists.first
             
             SideBarView()
-            
-            if let firstList = firstListViewModel {
+
+            if let firstList = firstListInstanceController {
                 MyListItemsHeaderView(
                     name: firstList.name,
                     count: firstList.itemsCount,
@@ -20,7 +20,7 @@ struct HomeScreen: View {
                 )
                 MyListItemsView(items: firstList.items)
             } else {
-                Text("Create your first view list")
+                Text("Create your first list")
             }
         }
         

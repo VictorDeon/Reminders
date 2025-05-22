@@ -2,12 +2,12 @@ import Foundation
 import SwiftUI
 import CoreData
 
-class AddNewListViewModel: ObservableObject {
+class AddNewListController: ObservableObject {
     @Published var name: String = ""
     @Published var color: Color = .blue
     
     var context: NSManagedObjectContext
-    
+
     init(context: NSManagedObjectContext) {
         self.context = context
     }

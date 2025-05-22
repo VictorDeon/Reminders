@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 import CoreData
 
-class MyListsViewModel: NSObject, ObservableObject {
-    @Published var myLists = [MyListInstanceViewModel]()
+class MyListsController: NSObject, ObservableObject {
+    @Published var myLists = [MyListInstanceController]()
     /// Essa controller simplifica o uso do NSFetchRequest em UIs que precisam reagir a mudanças (crud)
     private let fetchedResultsController: NSFetchedResultsController<MyList>
     /// É o ambiente em que seus objetos Core Data vivem, todo CRUD ocorre dentro desse contexto.
@@ -37,7 +37,7 @@ class MyListsViewModel: NSObject, ObservableObject {
             try fetchedResultsController.performFetch()
             guard let myLists = fetchedResultsController.fetchedObjects else { return }
             /// Transforma cada myList em um MyListViewModel que expoem o id, name e color
-            self.myLists = myLists.map(MyListInstanceViewModel.init)
+            self.myLists = myLists.map(MyListInstanceController.init)
         } catch {
             print(error)
         }
@@ -62,7 +62,7 @@ class MyListsViewModel: NSObject, ObservableObject {
         }
     }
     
-    func saveTo(list: MyListInstanceViewModel, title: String, dueDate: Date?) {
+    func saveTo(list: MyListInstanceController, title: String, dueDate: Date?) {
         let myListItem = MyListItem(context: context)
         myListItem.title = title
         myListItem.dueDate = dueDate
@@ -74,14 +74,14 @@ class MyListsViewModel: NSObject, ObservableObject {
         }
     }
     
-    func deleteItem(_ item: MyListItemViewModel) {
+    func deleteItem(_ item: MyListItemController) {
         let myListItem: MyListItem? = MyListItem.byId(id: item.listItemId)
         if let myListItem = myListItem {
             try? myListItem.delete()
         }
     }
     
-    func markAsCompleted(_ item: MyListItemViewModel) {
+    func markAsCompleted(_ item: MyListItemController) {
         let myListItem: MyListItem? = MyListItem.byId(id: item.listItemId)
         if let myListItem = myListItem {
             myListItem.isCompleted = true
@@ -90,7 +90,7 @@ class MyListsViewModel: NSObject, ObservableObject {
     }
     
     /// Realiza a deleção do item myList a partir do seu id
-    func delete(_ myList: MyListInstanceViewModel) {
+    func delete(_ myList: MyListInstanceController) {
         let myList: MyList? = MyList.byId(id: myList.id)
         if let myList = myList {
             try? myList.delete()
@@ -98,18 +98,18 @@ class MyListsViewModel: NSObject, ObservableObject {
     }
 }
 
-extension MyListsViewModel: NSFetchedResultsControllerDelegate {
+extension MyListsController: NSFetchedResultsControllerDelegate {
     /// Sempre que algo mudar no contexto, esse metodo será chamado e será atualizado a propriedade observavel com o @Published (myLists)
     /// com isso o swift redescobre a mudança e atualiza a UI automaticamente.
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
         /// Carrega do disco para a memória todas as MyList existentes
         guard let myLists = controller.fetchedObjects as? [MyList] else { return }
-        self.myLists = myLists.map(MyListInstanceViewModel.init)
+        self.myLists = myLists.map(MyListInstanceController.init)
     }
 }
 
 /// Objeto referente a cada item da lista
-struct MyListInstanceViewModel: Identifiable {
+struct MyListInstanceController: Identifiable {
     private let myList: MyList
     
     init(myList: MyList) {
@@ -128,12 +128,12 @@ struct MyListInstanceViewModel: Identifiable {
         Color(myList.color ?? .clear)
     }
     
-    var items: [MyListItemViewModel] {
+    var items: [MyListItemController] {
         guard let items = myList.items, let myItems = (items.allObjects as? [MyListItem]) else {
             return []
         }
         
-        return myItems.filter { $0.isCompleted == false }.map(MyListItemViewModel.init)
+        return myItems.filter { $0.isCompleted == false }.map(MyListItemController.init)
     }
     
     var itemsCount: Int {

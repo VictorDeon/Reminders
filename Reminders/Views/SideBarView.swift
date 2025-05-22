@@ -7,7 +7,7 @@ struct SideBarView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            MyListsView(viewModel: MyListsViewModel(context: context))
+            MyListsView(controller: MyListsController(context: context))
 
             Spacer()
 
@@ -22,7 +22,7 @@ struct SideBarView: View {
 
         }
         .sheet(isPresented: $isPresented) {
-            AddNewListView(viewModel: AddNewListViewModel(context: context))
+            AddNewListView(controller: AddNewListController(context: context))
         }
         .frame(minWidth: 200)
     }

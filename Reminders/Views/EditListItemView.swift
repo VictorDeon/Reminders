@@ -9,25 +9,25 @@ import SwiftUI
 
 struct EditListItemView: View {
     
-    var item: MyListItemViewModel
+    var item: MyListItemController
     @State private var selectedDate: Date = Date.today
     @State private var showCalendar: Bool = false
-    @ObservedObject var editListItemViewModel: EditListItemViewModel
+    @ObservedObject var editListItemController: EditListItemController
     var onUpdate: () -> Void
     
-    init(item: MyListItemViewModel, onUpdate: @escaping () -> Void) {
+    init(item: MyListItemController, onUpdate: @escaping () -> Void) {
         self.item = item
         self.onUpdate = onUpdate
-        editListItemViewModel = EditListItemViewModel(listItemViewModel: item)
+        editListItemController = EditListItemController(listItemController: item)
     }
     
     var calendarButtonTitle: String {
-        editListItemViewModel.selectedDate?.formatAsString ?? "Add Date"
+        editListItemController.selectedDate?.formatAsString ?? "Add Date"
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextField(item.title, text: $editListItemViewModel.title)
+            TextField(item.title, text: $editListItemController.title)
                 .textFieldStyle(.plain)
             
             Divider()
@@ -35,7 +35,7 @@ struct EditListItemView: View {
             HStack {
                 Text("Due Date:")
                 CalendarButtonView(title: calendarButtonTitle, showCalendar: $showCalendar) { selectedDate in
-                    editListItemViewModel.selectedDate = selectedDate
+                    editListItemController.selectedDate = selectedDate
                 }
             }
             
@@ -44,7 +44,7 @@ struct EditListItemView: View {
             HStack {
                 Spacer()
                 Button("Done") {
-                    editListItemViewModel.save()
+                    editListItemController.save()
                     onUpdate()
                 }
                 .buttonStyle(.borderedProminent)
@@ -57,5 +57,5 @@ struct EditListItemView: View {
 
 #Preview {
     let context = CoreDataManager.shared.persistentContainer.viewContext
-    EditListItemView(item: MyListItemViewModel(myListItem: MyListItem(context: context)), onUpdate: {})
+    EditListItemView(item: MyListItemController(myListItem: MyListItem(context: context)), onUpdate: {})
 }
