@@ -7,8 +7,6 @@ struct SideBarView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("All Items Count 10")
-
             MyListsView(viewModel: MyListsViewModel(context: context))
 
             Spacer()
@@ -26,6 +24,7 @@ struct SideBarView: View {
         .sheet(isPresented: $isPresented) {
             AddNewListView(viewModel: AddNewListViewModel(context: context))
         }
+        .frame(minWidth: 200)
     }
 }
 

@@ -19,14 +19,29 @@ struct MyListsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             List {
+                AllCountView(count: viewModel.allListItemCount)
                 Text("My Lists").padding(.bottom, 7)
                 ForEach(viewModel.myLists) { myList in
-                    HStack {
-                        Image(systemName: Constants.Icons.line3HorizontalCircleFill)
-                            .font(.title)
-                            .foregroundStyle(myList.color)
+                    NavigationLink {
+                        MyListItemsHeaderView(name: myList.name, count: myList.itemsCount, color: myList.color)
+                        MyListItemsView(
+                            items: myList.items,
+                            onItemAdded: { title, dueDate in
+                                viewModel.saveTo(list: myList, title: title, dueDate: dueDate)
+                            },
+                            onItemDeleted: viewModel.deleteItem,
+                            onItemCompleted: viewModel.markAsCompleted
+                        )
+                    } label: {
+                        HStack {
+                            Image(systemName: Constants.Icons.line3HorizontalCircleFill)
+                                .font(.title)
+                                .foregroundStyle(myList.color)
 
-                        Text(myList.name)
+                            Text(myList.name)
+                            Spacer()
+                            Text("\(myList.itemsCount)")
+                        }
                     }.contextMenu {
                         Button {
                             viewModel.delete(myList)

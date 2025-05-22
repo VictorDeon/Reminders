@@ -19,6 +19,7 @@ extension MyList {
 
     @NSManaged public var color: NSColor?
     @NSManaged public var name: String?
+    @NSManaged public var items: NSSet?
 }
 
 extension MyList : Identifiable { }
